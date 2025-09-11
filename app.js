@@ -18,6 +18,12 @@ app.use("/", authRoute);
 app.use("/profile", profileRoute)
 app.use("/connection", connectionRoute)
 app.use("/user", userRoute)
+
+
+app.get("/", (req, res) => {
+    res.send("Backend is running 🚀");
+});
+
 app.listen(PORT, () => {
     console.log(`Server started at PORT ${PORT}`);
 });
