@@ -14,7 +14,7 @@ connectToDb()
 app.use(cors())
 app.use(express.json());
 
-app.use("/api/auth", authRoute);
+app.use("/api", authRoute);
 app.use("/api/profile", profileRoute);
 app.use("/api/connection", connectionRoute);
 app.use("/api/user", userRoute);
