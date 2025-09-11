@@ -7,7 +7,7 @@ const connectionRoute = require("./src/routes/connectionRequest.js")
 const userRoute = require("./src/routes/user.js")
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 connectToDb()
 
