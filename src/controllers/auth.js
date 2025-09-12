@@ -22,17 +22,18 @@ const signup = async (req, res) => {
         // Create user object
         const userData = { firstName, lastName, email, password: newPassword };
 
-        // Include optional fields only if provided
+
         if (about) userData.about = about;
         if (gender) userData.gender = gender;
         if (photoUrl) userData.photoUrl = photoUrl;
         if (age) userData.age = age;
 
-        // Create and save user
+        
         const user = new User(userData);
         await user.save();
+        const token = jwt.sign({ id: user._id, email: email }, "$|KKLFc%5")
 
-        res.status(201).json({ message: "User created successfully", data: user });
+        res.status(201).json({ message: "User created successfully", data: user, token });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Something went wrong", error: error.message });
