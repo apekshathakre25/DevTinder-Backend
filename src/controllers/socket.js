@@ -9,7 +9,7 @@ const typingUsers = new Map(); // roomId -> Set of userIds who are typing
 const initializedSocket = (server) => {
     const io = socket(server, {
         cors: {
-            origin: "http://localhost:5173",
+            origin: "https://dev-tinder-frontend-ruddy.vercel.app"
         },
     });
 
@@ -23,7 +23,7 @@ const initializedSocket = (server) => {
 
             // Track online users
             onlineUsers.set(socket.id, _id);
-            
+
             if (!userSockets.has(_id)) {
                 userSockets.set(_id, new Set());
             }
@@ -61,12 +61,12 @@ const initializedSocket = (server) => {
                     const newMessage = { senderId, text };
                     chat.messages.push(newMessage);
                     await chat.save();
-                    
+
                     // Get the saved message with timestamp
                     const savedMessage = chat.messages[chat.messages.length - 1];
-                    io.to(room).emit("messageReceived", { 
-                        senderId, 
-                        senderName, 
+                    io.to(room).emit("messageReceived", {
+                        senderId,
+                        senderName,
                         text,
                         createdAt: savedMessage.createdAt,
                         seen: savedMessage.seen,
@@ -96,7 +96,7 @@ const initializedSocket = (server) => {
                     if (updated) {
                         await chat.save();
                         // Emit to the sender that their messages have been seen
-                        socket.to(room).emit("messagesSeen", { 
+                        socket.to(room).emit("messagesSeen", {
                             fromUserId: senderId,
                             toUserId: toUserId
                         });
@@ -113,7 +113,7 @@ const initializedSocket = (server) => {
             if (!userId) return;
 
             const room = [userId, toUserId].sort().join("-");
-            
+
             if (isTyping) {
                 if (!typingUsers.has(room)) {
                     typingUsers.set(room, new Set());
@@ -142,18 +142,18 @@ const initializedSocket = (server) => {
         socket.on("disconnect", () => {
             const userId = onlineUsers.get(socket.id);
             console.log(`User disconnected: ${userId || socket.id}`);
-            
+
             if (userId) {
                 // Remove this socket from user's socket set
                 if (userSockets.has(userId)) {
                     userSockets.get(userId).delete(socket.id);
-                    
+
                     // If user has no more active sockets, they're offline
                     if (userSockets.get(userId).size === 0) {
                         userSockets.delete(userId);
                         // Notify others that user is offline
                         socket.broadcast.emit("userOffline", { userId });
-                        
+
                         // Clear typing status for this user
                         for (const [room, typingSet] of typingUsers.entries()) {
                             if (typingSet.has(userId)) {
@@ -168,7 +168,7 @@ const initializedSocket = (server) => {
                     }
                 }
             }
-            
+
             onlineUsers.delete(socket.id);
         });
     });
