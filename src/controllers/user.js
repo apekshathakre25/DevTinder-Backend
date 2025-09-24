@@ -103,8 +103,33 @@ const feed = async (req, res) => {
 
 
 
+const getUserById = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "Invalid user ID" });
+        }
+
+        const user = await User.findById(userId).select("firstName lastName photoUrl age gender about");
+        
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error("Error fetching user:", error.message);
+        res.status(500).json({ 
+            message: "Server error while fetching user", 
+            error: error.message 
+        });
+    }
+};
+
 module.exports = {
     getAllPendingRequest,
     getAllConnections,
     feed,
+    getUserById,
 };
