@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema(
         },
         photoUrl: {
             type: String,
-            default: "https://i.pravatar.cc/150?img=3"
+            default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ3F-y7Vg6o89UDupCYsFgkrurBusjyrI0rQ&s"
         },
         age: {
             type: Number,

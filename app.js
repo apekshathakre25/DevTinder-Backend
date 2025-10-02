@@ -7,8 +7,8 @@ const connectionRoute = require("./src/routes/connectionRequest.js")
 const userRoute = require("./src/routes/user.js")
 const socketRoute = require("./src/routes/socket.js")
 const chatRoute = require("./src/routes/chat.js")
+const contactRoute = require("./src/routes/contact.js")
 const http = require("http")
-const socket = require("socket.io")
 const { initializedSocket } = require("./src/controllers/socket.js")
 
 const app = express();
@@ -28,7 +28,8 @@ app.use("/profile", profileRoute);
 app.use("/connection", connectionRoute);
 app.use("/user", userRoute);
 app.use("/chat", socketRoute);
-app.use("/message", chatRoute)
+app.use("/message", chatRoute);
+app.use("/contact", contactRoute);
 
 
 app.get("/", (req, res) => {
